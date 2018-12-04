@@ -30,7 +30,7 @@ spec:
         ```
   keywords: ['amq', 'streams', 'messaging', 'kafka', 'streaming']
   version: 1.0.0
-  maturity: GA
+  maturity: stable
   maintainers:
   - name: Red Hat, Inc.
     email: customerservice@redhat.com
@@ -431,7 +431,7 @@ spec:
           path: resources
           x-descriptors:
             - 'urn:alm:descriptor:com.tectonic.ui:resourceRequirements'
-    - name: kafkamirrormaker.kafka.strimzi.io
+    - name: kafkamirrormakers.kafka.strimzi.io
       version: v1alpha1
       kind: KafkaMirrorMaker
       displayName: Kafka MirrorMaker
