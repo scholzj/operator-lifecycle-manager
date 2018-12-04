@@ -17,17 +17,6 @@ spec:
         * The ability for a consumer to replay streams of events
         * The ability to partition topics for horizontal scalability
 
-        # Before you start
-
-        1\. Create AMQ Streams Cluster Roles
-        ```
-        $ oc apply -f http://amq.io/amqstreams/rbac-ga.yaml
-        ```
-        2\. Create following bindings
-        ```
-        $ oc adm policy add-cluster-role-to-user strimzi-cluster-operator-global -z strimzi-cluster-operator --namespace <namespace>
-        $ oc adm policy add-cluster-role-to-user strimzi-kafka-broker -z strimzi-cluster-operator --namespace <namespace>
-        ```
   keywords: ['amq', 'streams', 'messaging', 'kafka', 'streaming']
   version: 1.0.0
   maturity: stable
@@ -47,7 +36,7 @@ spec:
   install:
     strategy: deployment
     spec:
-      permissions:
+      clusterPermissions:
       - serviceAccountName: strimzi-cluster-operator
         rules:
         - apiGroups:
@@ -301,6 +290,32 @@ spec:
           - patch
           - update
           - delete
+        - apiGroups:
+          - rbac.authorization.k8s.io
+          resources:
+          - clusterroles
+          verbs:
+          - get
+          - create
+          - delete
+          - patch
+          - update
+        - apiGroups:
+          - rbac.authorization.k8s.io
+          resources:
+          - clusterrolebindings
+          verbs:
+          - get
+          - create
+          - delete
+          - patch
+          - update
+        - apiGroups:
+          - ""
+          resources:
+          - nodes
+          verbs:
+          - get
       deployments:
       - name: strimzi-cluster-operator
         spec:
@@ -351,6 +366,8 @@ spec:
                     value: registry.access.redhat.com/amqstreams-1/amqstreams10-kafkamirrormaker-openshift:1.0.0
                   - name: STRIMZI_LOG_LEVEL
                     value: INFO
+                  - name: STRIMZI_CREATE_CLUSTER_ROLES
+                    value: "TRUE"
   customresourcedefinitions:
     owned:
     - name: kafkas.kafka.strimzi.io
